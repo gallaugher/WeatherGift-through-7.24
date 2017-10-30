@@ -24,10 +24,21 @@ class PageVC: UIPageViewController {
         if let locationsDefaultsEncoded = UserDefaults.standard.value(forKey: "locationsDefaultsEncoded") as? Data{
             let decoder = JSONDecoder()
             if let locationsDefaultsArray = try? decoder.decode(Array.self, from: locationsDefaultsEncoded) as [WeatherUserDefault]{
-                for location in locationsDefaultsArray {
-                    let newLocation = WeatherLocation(name: location.name, coordinates: location.coordinates)
-                    locationsArray.append(newLocation)
+                
+                locationsArray = locationsDefaultsArray.map {
+                    WeatherLocation(name: $0.name, coordinates: $0.coordinates)
                 }
+//                locationsArray = locationsDefaultsArray.map {
+//                    let newWeatherLocation = WeatherLocation()
+//                    newWeatherLocation.name = $0.name
+//                    newWeatherLocation.coordinates = $0.coordinates
+//                    return newWeatherLocation
+//                }
+                
+//                for location in locationsDefaultsArray {
+//                    let newLocation = WeatherLocation(name: location.name, coordinates: location.coordinates)
+//                    locationsArray.append(newLocation)
+//                }
             }
         }
 

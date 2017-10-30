@@ -53,11 +53,7 @@ class ListVC: UIViewController {
     
     func saveUserDefaults() {
         // var locationsDefaultsArray = locationsArray as [WeatherUserDefault]
-
-        var locationsDefaultsArray = [WeatherUserDefault]()
-        for location in locationsArray {
-            locationsDefaultsArray.append(WeatherUserDefault(name: location.name, coordinates: location.coordinates))
-        }
+        let locationsDefaultsArray: [WeatherUserDefault] = locationsArray.map{WeatherUserDefault(name:  $0.name, coordinates: $0.coordinates)}
         
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(locationsDefaultsArray){
@@ -112,7 +108,7 @@ extension ListVC: UITableViewDelegate, UITableViewDataSource {
         let newIndexPath = IndexPath(row: locationsArray.count, section: 0)
         let latitude = place.coordinate.latitude
         let longitude = place.coordinate.longitude
-        var newWeatherLocation = WeatherLocation(name: place.name, coordinates: "\(latitude),\(longitude)")
+        let newWeatherLocation = WeatherLocation(name: place.name, coordinates: "\(latitude),\(longitude)")
         locationsArray.append(newWeatherLocation)
         tableView.insertRows(at: [newIndexPath], with: .automatic)
         saveUserDefaults()
