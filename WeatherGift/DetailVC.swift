@@ -117,7 +117,8 @@ extension DetailVC: CLLocationManagerDelegate {
 
 extension DetailVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return locationsArray[currentPage].dailyForecastArray.count
+        let locationArrayCount = locationsArray[currentPage].dailyForecastArray.count
+        return locationArrayCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -52,8 +52,13 @@ class ListVC: UIViewController {
     }
     
     func saveUserDefaults() {
+        // var locationsDefaultsArray = locationsArray as [WeatherUserDefault]
+
         var locationsDefaultsArray = [WeatherUserDefault]()
-        locationsDefaultsArray = locationsArray
+        for location in locationsArray {
+            locationsDefaultsArray.append(WeatherUserDefault(name: location.name, coordinates: location.coordinates))
+        }
+        
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(locationsDefaultsArray){
             UserDefaults.standard.set(encoded, forKey: "locationsDefaultsEncoded")
@@ -79,6 +84,7 @@ extension ListVC: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             locationsArray.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            saveUserDefaults() 
         }
     }
     
@@ -86,6 +92,7 @@ extension ListVC: UITableViewDelegate, UITableViewDataSource {
         let itemToMove = locationsArray[sourceIndexPath.row]
         locationsArray.remove(at: sourceIndexPath.row)
         locationsArray.insert(itemToMove, at: destinationIndexPath.row)
+        saveUserDefaults()
     }
     
     //MARK:- tableView methods to freeze the first cell

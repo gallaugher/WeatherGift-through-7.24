@@ -21,15 +21,20 @@ class PageVC: UIPageViewController {
         delegate = self
         dataSource = self
         
-        if let locationsDefaultsData = UserDefaults.standard.value(forKey: "locationsDefaultsEncoded") as? Data{
+        if let locationsDefaultsEncoded = UserDefaults.standard.value(forKey: "locationsDefaultsEncoded") as? Data{
             let decoder = JSONDecoder()
-            if let locationsDefaultsArray = try? decoder.decode(Array.self, from: locationsDefaultsData) as [WeatherUserDefault]{
-                locationsArray = locationsDefaultsArray as! [WeatherLocation]
+            if let locationsDefaultsArray = try? decoder.decode(Array.self, from: locationsDefaultsEncoded) as [WeatherUserDefault]{
+                for location in locationsDefaultsArray {
+                    let newLocation = WeatherLocation(name: location.name, coordinates: location.coordinates)
+                    locationsArray.append(newLocation)
+                }
             }
         }
 
-        let newLocation = WeatherLocation(name: "", coordinates: "")
-        locationsArray.append(newLocation)
+        if locationsArray.count < 1 {
+            let newLocation = WeatherLocation(name: "", coordinates: "")
+            locationsArray.append(newLocation)
+        }
         
         setViewControllers([createDetailVC(forPage: 0)], direction: .forward, animated: false, completion: nil)
     }
