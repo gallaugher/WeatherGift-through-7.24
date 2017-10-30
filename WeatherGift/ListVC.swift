@@ -52,7 +52,8 @@ class ListVC: UIViewController {
     }
     
     func saveUserDefaults() {
-        let locationsDefaultsArray = locationsArray as [WeatherUserDefault]
+        var locationsDefaultsArray = [WeatherUserDefault]()
+        locationsDefaultsArray = locationsArray
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(locationsDefaultsArray){
             UserDefaults.standard.set(encoded, forKey: "locationsDefaultsEncoded")
